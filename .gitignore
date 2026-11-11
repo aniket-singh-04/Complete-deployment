@@ -36,3 +36,13 @@ temp/
 # Runtime files
 *.pid
 *.seed
+
+
+# Runtime
+*.pid
+*.seed
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
