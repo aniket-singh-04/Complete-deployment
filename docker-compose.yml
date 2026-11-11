@@ -1,0 +1,26 @@
+services:
+  app:
+    image: ${IMAGE_NAME:-my_app}:${IMAGE_TAG:-v1.0.0}
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+
+    container_name: ${CONTAINER_NAME:-express-app}
+
+    restart: unless-stopped
+
+    ports:
+      - "4444:4444"
+
+    environment: # this is where you can define environment variables for your application and it is overriden by the .env file if it exists and not overridden by the docker-compose command line
+      - NODE_ENV=production
+      - PORT=4444
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4444/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

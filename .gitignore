@@ -1,0 +1,38 @@
+# Node.js dependencies
+node_modules/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Build files
+dist/
+build/
+
+# Testing
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+
+# Runtime files
+*.pid
+*.seed
