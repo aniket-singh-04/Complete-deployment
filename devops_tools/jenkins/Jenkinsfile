@@ -6,6 +6,11 @@ pipeline {
         disableConcurrentBuilds()
     }
 
+    tools { 
+        // tools used in this pipeline are defined in the Jenkins global configuration. The name of the tool is used to reference it in the pipeline.
+        nodejs 'node26'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -14,9 +19,15 @@ pipeline {
             }
         }
 
-        stage('Inspect workspace') {
+        stage('Tool versions') {
             steps {
-                sh 'ls -la'
+                sh 'node --version && npm --version'
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                sh 'npm ci'
             }
         }
     }
