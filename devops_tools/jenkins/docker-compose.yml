@@ -1,0 +1,37 @@
+services:
+  jenkins:
+    image: ${JENKINS_IMAGE}
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - ci-net
+
+  buildah-agent:
+    image: jenkins-agent-buildah:local
+    container_name: buildah-agent
+    restart: unless-stopped
+    user: root
+    security_opt:
+      - seccomp=unconfined
+      - apparmor=unconfined
+    environment:
+      JENKINS_URL: http://jenkins:8080
+      JENKINS_AGENT_NAME: buildah-agent
+      JENKINS_SECRET: ${JENKINS_SECRET}
+      JENKINS_WEB_SOCKET: "true"
+    depends_on:
+      - jenkins
+    networks:
+      - ci-net
+
+volumes:
+  jenkins_home:
+    external: true
+
+networks:
+  ci-net:
+    external: true
