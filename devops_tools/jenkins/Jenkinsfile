@@ -40,5 +40,19 @@ pipeline {
                 '''
             }
         }
+
+        stage('Verify image') {
+            steps {
+                sh '''
+                    set -eu
+                    ctr=$(buildah --storage-driver=vfs from localhost/devops-app:${BUILD_NUMBER})
+                    trap 'buildah --storage-driver=vfs rm "$ctr" >/dev/null' EXIT
+                    out=$(buildah --storage-driver=vfs run --isolation=chroot --network host "$ctr" -- \
+                          sh -c 'PORT=4444 node index.js & pid=$!; sleep 3; wget -qO- http://127.0.0.1:4444/health; kill $pid')
+                    echo "$out"
+                    echo "$out" | grep -q '"status":"OK"'
+                '''
+            }
+        }
     }
 }
