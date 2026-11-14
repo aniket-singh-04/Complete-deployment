@@ -74,3 +74,4 @@ Only items marked **Done** have been implemented and tested.
 
 - No credentials are stored in this repository.
 - `.env` files are excluded from Git and from Docker images.
+
